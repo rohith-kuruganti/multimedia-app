@@ -1,5 +1,6 @@
 const cloudinary = require("../config/cloudinary");
 const File = require("../models/file.model");
+const { calculateRelevanceScore } = require("../utils/ranking");
 
 const uploadFile = async (req, res) => {
   try {
