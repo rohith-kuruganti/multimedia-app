@@ -108,10 +108,20 @@ const getFileById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const file = await File.findOne({
-      _id: id,
-      user: req.user.userId,
-    });
+    const file = await File.findOneAndUpdate(
+      {
+        _id: id,
+        user: req.user.userId,
+      },
+      {
+        $inc: {
+          viewCount: 1,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     if (!file) {
       return res.status(404).json({
@@ -125,7 +135,7 @@ const getFileById = async (req, res) => {
       file,
     });
   } catch (error) {
-    console.error("Get file by id error:", error);
+    console.error("Get file error:", error);
 
     return res.status(500).json({
       success: false,
