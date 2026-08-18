@@ -83,122 +83,95 @@ const getFileType = (mimeType) => {
 };
 
 const getFiles = async (req, res) => {
-  try {
-    const files = await File.find({
-      user: req.user.userId,
-    }).sort({
-      createdAt: -1,
-    });
+  const files = await File.find({
+    user: req.user.userId,
+  }).sort({
+    createdAt: -1,
+  });
 
-    return res.status(200).json({
-      success: true,
-      count: files.length,
-      files,
-    });
-  } catch (error) {
-    console.error("Get files error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Failed to retrieve files",
-    });
-  }
+  return res.status(200).json({
+    success: true,
+    count: files.length,
+    files,
+  });
 };
 
 const getFileById = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const file = await File.findOneAndUpdate(
-      {
-        _id: id,
-        user: req.user.userId,
+  const file = await File.findOneAndUpdate(
+    {
+      _id: id,
+      user: req.user.userId,
+    },
+    {
+      $inc: {
+        viewCount: 1,
       },
-      {
-        $inc: {
-          viewCount: 1,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-
-    if (!file) {
-      return res.status(404).json({
-        success: false,
-        message: "File not found",
-      });
+    },
+    {
+      new: true,
     }
+  );
 
-    return res.status(200).json({
-      success: true,
-      file,
-    });
-  } catch (error) {
-    console.error("Get file error:", error);
-
-    return res.status(500).json({
+  if (!file) {
+    return res.status(404).json({
       success: false,
-      message: "Failed to retrieve file",
+      message: "File not found",
     });
   }
+
+  return res.status(200).json({
+    success: true,
+    file,
+  });
 };
 
 const searchFiles = async (req, res) => {
-  try {
-    const { query } = req.query;
+  const { query } = req.query;
 
-    if (!query || !query.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: "Search query is required",
-      });
-    }
-
-    const searchQuery = query.trim();
-
-    const files = await File.find({
-      user: req.user.userId,
-      $or: [
-        {
-          originalName: {
-            $regex: searchQuery,
-            $options: "i",
-          },
-        },
-        {
-          tags: {
-            $regex: searchQuery,
-            $options: "i",
-          },
-        },
-      ],
-    });
-
-    const rankedFiles = files
-      .map((file) => ({
-        file,
-        score: calculateRelevanceScore(file, searchQuery),
-      }))
-      .sort((a, b) => b.score - a.score);
-
-    return res.status(200).json({
-      success: true,
-      count: rankedFiles.length,
-      files: rankedFiles.map(({ file, score }) => ({
-        ...file.toObject(),
-        relevanceScore: score,
-      })),
-    });
-  } catch (error) {
-    console.error("Search files error:", error);
-
-    return res.status(500).json({
+  if (!query || !query.trim()) {
+    return res.status(400).json({
       success: false,
-      message: "Search failed",
+      message: "Search query is required",
     });
   }
+
+  const searchQuery = query.trim();
+
+  const files = await File.find({
+    user: req.user.userId,
+    $or: [
+      {
+        originalName: {
+          $regex: searchQuery,
+          $options: "i",
+        },
+      },
+      {
+        tags: {
+          $regex: searchQuery,
+          $options: "i",
+        },
+      },
+    ],
+  });
+
+  const rankedFiles = files
+    .map((file) => ({
+      file,
+      score: calculateRelevanceScore(file, searchQuery),
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  return res.status(200).json({
+    success: true,
+    count: rankedFiles.length,
+    files: rankedFiles.map(({ file, score }) => ({
+      ...file.toObject(),
+      relevanceScore: score,
+    })),
+  });
 };
 
 module.exports = {

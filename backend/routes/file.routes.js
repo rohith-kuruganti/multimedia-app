@@ -9,6 +9,7 @@ const {
   getFileById,
   searchFiles,
 } = require("../controllers/file.controller");
+const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
@@ -41,10 +42,9 @@ router.post(
       next();
     });
   },
-  uploadFile
+  asyncHandler(uploadFile)
 );
-router.get("/", authenticate, getFiles);
-router.get("/search", authenticate, searchFiles);
-router.get("/:id", authenticate, getFileById);
-
+router.get("/", authenticate, asyncHandler(getFiles));
+router.get("/search", authenticate, asyncHandler(searchFiles));
+router.get("/:id", authenticate, asyncHandler(getFileById));
 module.exports = router;
