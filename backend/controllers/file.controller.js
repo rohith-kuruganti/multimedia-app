@@ -176,10 +176,20 @@ const searchFiles = async (req, res) => {
       ],
     });
 
+    const rankedFiles = files
+      .map((file) => ({
+        file,
+        score: calculateRelevanceScore(file, searchQuery),
+      }))
+      .sort((a, b) => b.score - a.score);
+
     return res.status(200).json({
       success: true,
-      count: files.length,
-      files,
+      count: rankedFiles.length,
+      files: rankedFiles.map(({ file, score }) => ({
+        ...file.toObject(),
+        relevanceScore: score,
+      })),
     });
   } catch (error) {
     console.error("Search files error:", error);
