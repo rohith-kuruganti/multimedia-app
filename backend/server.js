@@ -1,6 +1,6 @@
 const express = require("express");
-
 const config = require("./config/env");
+
 const healthRoutes = require("./routes/health.routes");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
