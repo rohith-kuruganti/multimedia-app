@@ -1,5 +1,7 @@
 const express = require("express");
 const config = require("./config/env");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const healthRoutes = require("./routes/health.routes");
 const connectDB = require("./config/db");
@@ -9,6 +11,7 @@ const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
 
 app.use("/api/health", healthRoutes);
