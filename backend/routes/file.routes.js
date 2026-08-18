@@ -7,6 +7,7 @@ const {
   uploadFile,
   getFiles,
   getFileById,
+  searchFiles,
 } = require("../controllers/file.controller");
 
 const router = express.Router();
@@ -43,6 +44,7 @@ router.post(
   uploadFile
 );
 router.get("/", authenticate, getFiles);
+router.get("/search", authenticate, searchFiles);
 router.get("/:id", authenticate, getFileById);
 
 module.exports = router;

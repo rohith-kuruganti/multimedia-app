@@ -144,8 +144,55 @@ const getFileById = async (req, res) => {
   }
 };
 
+const searchFiles = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    if (!query || !query.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Search query is required",
+      });
+    }
+
+    const searchQuery = query.trim();
+
+    const files = await File.find({
+      user: req.user.userId,
+      $or: [
+        {
+          originalName: {
+            $regex: searchQuery,
+            $options: "i",
+          },
+        },
+        {
+          tags: {
+            $regex: searchQuery,
+            $options: "i",
+          },
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error("Search files error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Search failed",
+    });
+  }
+};
+
 module.exports = {
   uploadFile,
   getFiles,
   getFileById,
+  searchFiles,
 };
