@@ -81,6 +81,61 @@ const getFileType = (mimeType) => {
   return "unknown";
 };
 
+const getFiles = async (req, res) => {
+  try {
+    const files = await File.find({
+      user: req.user.userId,
+    }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: files.length,
+      files,
+    });
+  } catch (error) {
+    console.error("Get files error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve files",
+    });
+  }
+};
+
+const getFileById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await File.findOne({
+      _id: id,
+      user: req.user.userId,
+    });
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      file,
+    });
+  } catch (error) {
+    console.error("Get file by id error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve file",
+    });
+  }
+};
+
 module.exports = {
   uploadFile,
+  getFiles,
+  getFileById,
 };

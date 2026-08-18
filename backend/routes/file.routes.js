@@ -3,7 +3,11 @@ const multer = require("multer");
 
 const authenticate = require("../middleware/auth.middleware");
 const upload = require("../middleware/upload.middleware");
-const { uploadFile } = require("../controllers/file.controller");
+const {
+  uploadFile,
+  getFiles,
+  getFileById,
+} = require("../controllers/file.controller");
 
 const router = express.Router();
 
@@ -38,5 +42,7 @@ router.post(
   },
   uploadFile
 );
+router.get("/", authenticate, getFiles);
+router.get("/:id", authenticate, getFileById);
 
 module.exports = router;
