@@ -36,7 +36,7 @@ function Dashboard() {
       <main>
         <h1>My Files</h1>
 
-        <UploadForm />
+        <UploadForm onUploadSuccess={loadFiles} />
 
         <section>
           <h2>Files</h2>
