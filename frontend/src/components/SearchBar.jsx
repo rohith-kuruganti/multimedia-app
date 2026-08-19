@@ -6,14 +6,14 @@ function SearchBar({ onSearch, onClear }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const trimmedQuery = query.trim();
+    const value = query.trim();
 
-    if (!trimmedQuery) {
+    if (!value) {
       onClear();
       return;
     }
 
-    onSearch(trimmedQuery);
+    onSearch(value);
   };
 
   const handleClear = () => {
@@ -22,10 +22,10 @@ function SearchBar({ onSearch, onClear }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="search-bar" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Search files..."
+        placeholder="Search your files..."
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
