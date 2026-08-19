@@ -35,22 +35,39 @@ function UploadForm({ onUploadSuccess }) {
     for (const file of selectedFiles) {
       setUploadStatus((previous) => ({
         ...previous,
-        [file.name]: "uploading",
+        [file.name]: {
+          status: "uploading",
+          progress: 0,
+        },
       }));
 
       try {
-        await fileService.uploadFile(file);
+        await fileService.uploadFile(file, (progress) => {
+          setUploadStatus((previous) => ({
+            ...previous,
+            [file.name]: {
+              status: "uploading",
+              progress,
+            },
+          }));
+        });
 
         setUploadStatus((previous) => ({
           ...previous,
-          [file.name]: "uploaded",
+          [file.name]: {
+            status: "uploaded",
+            progress: 100,
+          },
         }));
 
         successCount++;
       } catch (error) {
         setUploadStatus((previous) => ({
           ...previous,
-          [file.name]: "failed",
+          [file.name]: {
+            status: "failed",
+            progress: 0,
+          },
         }));
 
         failedCount++;
@@ -85,7 +102,7 @@ function UploadForm({ onUploadSuccess }) {
         <div>
           <h3>Selected Files</h3>
 
-          <ul>
+          <ul className="upload-file-list">
             {selectedFiles.map((file, index) => {
               const status = uploadStatus[file.name];
 
@@ -93,7 +110,13 @@ function UploadForm({ onUploadSuccess }) {
                 <li key={`${file.name}-${index}`}>
                   {file.name}
 
-                  {status === "uploading" && <span> — Uploading...</span>}
+                  {status?.status === "uploading" && (
+                    <div>
+                      <span>Uploading... {status.progress}%</span>
+
+                      <progress value={status.progress} max="100" />
+                    </div>
+                  )}
 
                   {status === "uploaded" && <span> — Uploaded ✓</span>}
 

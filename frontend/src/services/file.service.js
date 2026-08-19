@@ -12,12 +12,24 @@ const getFileById = async (id) => {
   return response.data;
 };
 
-const uploadFile = async (file) => {
+const uploadFile = async (file, onProgress) => {
   const formData = new FormData();
 
   formData.append("file", file);
 
-  const response = await api.post("/files/upload", formData);
+  const response = await api.post("/files/upload", formData, {
+    onUploadProgress: (progressEvent) => {
+      if (!progressEvent.total) {
+        return;
+      }
+
+      const percent = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total
+      );
+
+      onProgress(percent);
+    },
+  });
 
   return response.data;
 };
