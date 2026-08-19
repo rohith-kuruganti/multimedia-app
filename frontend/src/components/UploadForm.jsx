@@ -4,6 +4,7 @@ import fileService from "../services/file.service";
 
 function UploadForm({ onUploadSuccess }) {
   const [selectedFile, setSelectedFile] = useState([]);
+  const [uploadStatus, setUploadStatus] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,6 +14,7 @@ function UploadForm({ onUploadSuccess }) {
     const files = Array.from(event.target.files);
 
     setSelectedFiles(files);
+    setUploadStatus({});
     setError("");
     setSuccess("");
   };
@@ -23,24 +25,48 @@ function UploadForm({ onUploadSuccess }) {
       return;
     }
 
-    try {
-      setLoading(true);
-      setError("");
-      setSuccess("");
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
-      for (const file of selectedFiles) {
+    let successCount = 0;
+    let failedCount = 0;
+
+    for (const file of selectedFiles) {
+      setUploadStatus((previous) => ({
+        ...previous,
+        [file.name]: "uploading",
+      }));
+
+      try {
         await fileService.uploadFile(file);
+
+        setUploadStatus((previous) => ({
+          ...previous,
+          [file.name]: "uploaded",
+        }));
+
+        successCount++;
+      } catch (error) {
+        setUploadStatus((previous) => ({
+          ...previous,
+          [file.name]: "failed",
+        }));
+
+        failedCount++;
       }
+    }
 
-      setSuccess(`${selectedFiles.length} file(s) uploaded successfully`);
+    setLoading(false);
 
-      setSelectedFiles([]);
-
+    if (successCount > 0) {
       onUploadSuccess();
-    } catch (error) {
-      setError(error.response?.data?.message || "File upload failed");
-    } finally {
-      setLoading(false);
+    }
+
+    if (failedCount === 0) {
+      setSuccess(`${successCount} file(s) uploaded successfully`);
+    } else {
+      setSuccess(`${successCount} uploaded, ${failedCount} failed`);
     }
   };
 
@@ -60,9 +86,21 @@ function UploadForm({ onUploadSuccess }) {
           <h3>Selected Files</h3>
 
           <ul>
-            {selectedFiles.map((file, index) => (
-              <li key={`${file.name}-${index}`}>{file.name}</li>
-            ))}
+            {selectedFiles.map((file, index) => {
+              const status = uploadStatus[file.name];
+
+              return (
+                <li key={`${file.name}-${index}`}>
+                  {file.name}
+
+                  {status === "uploading" && <span> — Uploading...</span>}
+
+                  {status === "uploaded" && <span> — Uploaded ✓</span>}
+
+                  {status === "failed" && <span> — Failed ✕</span>}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
