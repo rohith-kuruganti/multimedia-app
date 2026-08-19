@@ -20,7 +20,15 @@ function FileCard({ file, onView }) {
 
   return (
     <article className="file-card">
-      <div className="file-icon">{getFileIcon()}</div>
+      {file.fileType === "image" ? (
+        <img
+          src={file.cloudinaryUrl}
+          alt={file.originalName}
+          className="file-thumbnail"
+        />
+      ) : (
+        <div className="file-icon">{getFileIcon()}</div>
+      )}
 
       <h3 title={file.originalName}>{file.originalName}</h3>
 
