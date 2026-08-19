@@ -3,24 +3,23 @@ import { useState } from "react";
 import fileService from "../services/file.service";
 
 function UploadForm({ onUploadSuccess }) {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const files = Array.from(event.target.files);
 
-    setSelectedFile(file || null);
+    setSelectedFiles(files);
     setError("");
     setSuccess("");
   };
 
   const handleUpload = async () => {
-    if (!selectedFile) {
-      setError("Please select a file");
-
+    if (!selectedFiles.length) {
+      setError("Please select at least one file");
       return;
     }
 
@@ -29,11 +28,13 @@ function UploadForm({ onUploadSuccess }) {
       setError("");
       setSuccess("");
 
-      await fileService.uploadFile(selectedFile);
+      for (const file of selectedFiles) {
+        await fileService.uploadFile(file);
+      }
 
-      setSuccess("File uploaded successfully");
+      setSuccess(`${selectedFiles.length} file(s) uploaded successfully`);
 
-      setSelectedFile(null);
+      setSelectedFiles([]);
 
       onUploadSuccess();
     } catch (error) {
@@ -47,9 +48,24 @@ function UploadForm({ onUploadSuccess }) {
     <section>
       <h2>Upload Files</h2>
 
-      <input type="file" onChange={handleFileChange} disabled={loading} />
+      <input
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        disabled={loading}
+      />
 
-      {selectedFile && <p>Selected: {selectedFile.name}</p>}
+      {selectedFiles.length > 0 && (
+        <div>
+          <h3>Selected Files</h3>
+
+          <ul>
+            {selectedFiles.map((file, index) => (
+              <li key={`${file.name}-${index}`}>{file.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <button type="button" onClick={handleUpload} disabled={loading}>
         {loading ? "Uploading..." : "Upload"}
