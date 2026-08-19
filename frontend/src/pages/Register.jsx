@@ -50,6 +50,9 @@ function Register() {
 
   return (
     <div>
+      <button className="back-home-button" onClick={() => navigate("/")}>
+        ← Home
+      </button>
       <h1>Create Account</h1>
 
       <form onSubmit={handleSubmit}>
