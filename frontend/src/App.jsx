@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -12,7 +14,14 @@ function App() {
 
         <Route path="/register" element={<Register />} />
 
-        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

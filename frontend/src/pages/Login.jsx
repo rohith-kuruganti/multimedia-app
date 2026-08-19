@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import authService from "../services/auth.service";
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -37,9 +39,7 @@ function Login() {
       setLoading(true);
 
       const response = await authService.login(formData);
-
-      localStorage.setItem("token", response.token);
-
+      login(response.token);
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Login failed");
