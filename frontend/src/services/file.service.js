@@ -16,7 +16,18 @@ const uploadFile = async (file) => {
   return response.data;
 };
 
+const searchFiles = async (query) => {
+  const response = await api.get("/files/search", {
+    params: {
+      query,
+    },
+  });
+
+  return response.data;
+};
+
 export default {
   getFiles,
   uploadFile,
+  searchFiles,
 };

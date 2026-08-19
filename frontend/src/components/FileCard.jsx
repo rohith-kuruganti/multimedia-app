@@ -9,6 +9,10 @@ function FileCard({ file }) {
 
       <p>Views: {file.viewCount}</p>
 
+      {file.relevanceScore !== undefined && (
+        <p>Relevance: {file.relevanceScore}</p>
+      )}
+
       <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
 
       <button>View</button>
