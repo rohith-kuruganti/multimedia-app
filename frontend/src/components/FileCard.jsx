@@ -1,13 +1,15 @@
 function FileCard({ file }) {
   return (
     <article>
-      <div>
-        <strong>{file.originalName}</strong>
-      </div>
+      <h3>{file.originalName}</h3>
 
       <p>Type: {file.fileType}</p>
 
+      <p>Size: {file.size} bytes</p>
+
       <p>Views: {file.viewCount}</p>
+
+      <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
 
       <button>View</button>
     </article>
