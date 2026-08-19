@@ -36,32 +36,6 @@ A full-stack multimedia file management application for uploading, managing, sea
 - bcrypt
 - Swagger
 
-## Project Structure
-
-multimedia-app/
-│
-├── frontend/
-│ ├── src/
-│ ├── public/
-│ ├── package.json
-│ └── .env
-│
-├── backend/
-│ ├── config/
-│ ├── controllers/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ ├── services/
-│ ├── app.js
-│ ├── server.js
-│ ├── package.json
-│ └── .env
-│
-└── README.md
-
-Application Modules
-
 Authentication
 
 Handles user registration, login, authentication, authorization, and protected routes.
