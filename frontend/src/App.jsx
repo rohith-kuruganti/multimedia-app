@@ -1,22 +1,19 @@
-import api from "./services/api";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
 
 function App() {
-  const testApi = async () => {
-    try {
-      const response = await api.get("/health");
-
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <div>
-      <h1>Multimedia Upload & Search</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<h1>Home</h1>} />
 
-      <button onClick={testApi}>Test Backend</button>
-    </div>
+        <Route path="/login" element={<h1>Login</h1>} />
+
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
