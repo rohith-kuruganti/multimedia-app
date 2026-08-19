@@ -1,4 +1,4 @@
-function FileCard({ file }) {
+function FileCard({ file, onView }) {
   return (
     <article>
       <h3>{file.originalName}</h3>
@@ -15,7 +15,7 @@ function FileCard({ file }) {
 
       <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
 
-      <button>View</button>
+      <button onClick={() => onView(file._id)}>View</button>
     </article>
   );
 }

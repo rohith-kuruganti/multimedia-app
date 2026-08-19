@@ -6,6 +6,12 @@ const getFiles = async () => {
   return response.data;
 };
 
+const getFileById = async (id) => {
+  const response = await api.get(`/files/${id}`);
+
+  return response.data;
+};
+
 const uploadFile = async (file) => {
   const formData = new FormData();
 
@@ -28,6 +34,7 @@ const searchFiles = async (query) => {
 
 export default {
   getFiles,
+  getFileById,
   uploadFile,
   searchFiles,
 };

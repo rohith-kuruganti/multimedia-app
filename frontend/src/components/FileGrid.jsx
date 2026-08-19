@@ -1,6 +1,6 @@
 import FileCard from "./FileCard";
 
-function FileGrid({ files }) {
+function FileGrid({ files, onView }) {
   if (!files.length) {
     return <p>No files found.</p>;
   }
@@ -8,7 +8,7 @@ function FileGrid({ files }) {
   return (
     <div>
       {files.map((file) => (
-        <FileCard key={file._id} file={file} />
+        <FileCard key={file._id} file={file} onView={onView} />
       ))}
     </div>
   );
