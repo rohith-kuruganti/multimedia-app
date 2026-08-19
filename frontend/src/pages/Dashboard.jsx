@@ -1,22 +1,25 @@
-import { useNavigate } from "react-router-dom";
-
-import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Navbar";
+import UploadForm from "../components/UploadForm";
+import FileGrid from "../components/FileGrid";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
-  const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const files = [];
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <Navbar />
 
-      <button onClick={handleLogout}>Logout</button>
+      <main>
+        <h1>My Files</h1>
+
+        <UploadForm />
+
+        <section>
+          <h2>Files</h2>
+
+          <FileGrid files={files} />
+        </section>
+      </main>
     </div>
   );
 }
