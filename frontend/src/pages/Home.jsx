@@ -7,7 +7,7 @@ function Home() {
     <div className="home-page">
       <header className="home-navbar">
         <div className="home-logo">
-          <span>MediaHub</span>
+          <span>Multimedia Hub</span>
         </div>
 
         <div className="home-actions">
