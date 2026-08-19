@@ -121,3 +121,55 @@ article {
   border-radius: 8px;
   margin-bottom: 12px;
 }
+
+@media (max-width: 768px) {
+  nav {
+    padding: 12px 16px;
+  }
+
+  nav h2 {
+    font-size: 20px;
+  }
+
+  main {
+    padding: 16px;
+  }
+
+  .file-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .file-card {
+    width: auto;
+  }
+
+  .preview-modal {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  nav div:last-child {
+    width: 100%;
+  }
+
+  nav button {
+    flex: 1;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .file-thumbnail {
+    height: 180px;
+  }
+}
