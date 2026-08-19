@@ -6,7 +6,7 @@ function FileGrid({ files, onView }) {
   }
 
   return (
-    <div>
+    <div className="file-grid">
       {files.map((file) => (
         <FileCard key={file._id} file={file} onView={onView} />
       ))}

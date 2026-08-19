@@ -83,3 +83,33 @@ article {
   width: 100%;
   margin-top: 6px;
 }
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.file-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  background: white;
+}
+
+.file-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.file-card h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-card button {
+  width: 100%;
+  margin-top: 10px;
+}

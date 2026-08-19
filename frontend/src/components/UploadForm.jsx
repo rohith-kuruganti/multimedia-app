@@ -3,7 +3,7 @@ import { useState } from "react";
 import fileService from "../services/file.service";
 
 function UploadForm({ onUploadSuccess }) {
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploadStatus, setUploadStatus] = useState({});
 
   const [loading, setLoading] = useState(false);

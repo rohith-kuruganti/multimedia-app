@@ -1,19 +1,32 @@
 function FileCard({ file, onView }) {
+  const getFileIcon = () => {
+    if (file.fileType === "image") return "🖼️";
+    if (file.fileType === "video") return "🎥";
+    if (file.fileType === "audio") return "🎵";
+    if (file.fileType === "pdf") return "📄";
+
+    return "📁";
+  };
+
+  const formatSize = (bytes) => {
+    if (!bytes) return "0 Bytes";
+
+    const units = ["Bytes", "KB", "MB", "GB"];
+
+    const index = Math.floor(Math.log(bytes) / Math.log(1024));
+
+    return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
+  };
+
   return (
-    <article>
-      <h3>{file.originalName}</h3>
+    <article className="file-card">
+      <div className="file-icon">{getFileIcon()}</div>
 
-      <p>Type: {file.fileType}</p>
+      <h3 title={file.originalName}>{file.originalName}</h3>
 
-      <p>Size: {file.size} bytes</p>
+      <p>{formatSize(file.size)}</p>
 
-      <p>Views: {file.viewCount}</p>
-
-      {file.relevanceScore !== undefined && (
-        <p>Relevance: {file.relevanceScore}</p>
-      )}
-
-      <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
+      <p>Views: {file.viewCount || 0}</p>
 
       <button onClick={() => onView(file._id)}>View</button>
     </article>
