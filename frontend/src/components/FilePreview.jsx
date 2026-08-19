@@ -13,6 +13,8 @@ function FilePreview({ file, onClose }) {
 
   const isPreviewable = isImage || isVideo || isAudio || isPdf;
 
+  console.log("PDF URL:", file.cloudinaryUrl);
+
   return (
     <div className="preview-overlay">
       <div className="preview-modal">

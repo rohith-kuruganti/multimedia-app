@@ -97,9 +97,9 @@ function Dashboard() {
         <section className="files-section">
           <h2>{isSearching ? "Search Results" : "My Files"}</h2>
 
-          {loading && <p>Loading files...</p>}
+          {loading && <div className="state-message">Loading files...</div>}
 
-          {error && <p>{error}</p>}
+          {error && <div className="state-message error">{error}</div>}
 
           {!loading && !error && (
             <FileGrid files={files} onView={handleViewFile} />
