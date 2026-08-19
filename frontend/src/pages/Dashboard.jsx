@@ -79,18 +79,23 @@ function Dashboard() {
   };
 
   return (
-    <div>
+    <div className="dashboard">
       <Navbar />
 
-      <main>
-        <h1>My Files</h1>
+      <main className="dashboard-content">
+        <div className="dashboard-header">
+          <div>
+            <h1>My Files</h1>
+            <p>Upload, search and manage your files.</p>
+          </div>
+        </div>
 
         <SearchBar onSearch={handleSearch} onClear={handleClearSearch} />
 
         <UploadForm onUploadSuccess={handleUploadSuccess} />
 
-        <section>
-          <h2>{isSearching ? "Search Results" : "Files"}</h2>
+        <section className="files-section">
+          <h2>{isSearching ? "Search Results" : "My Files"}</h2>
 
           {loading && <p>Loading files...</p>}
 
